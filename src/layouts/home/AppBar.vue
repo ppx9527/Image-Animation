@@ -54,12 +54,13 @@
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator"
 
+// 导航栏
 @Component
 export default class HomeAppBar extends Vue{
   private drawer = null;
   private items = [
     'Home',
-    'Pro'
+    'About'
   ];
 }
 </script>

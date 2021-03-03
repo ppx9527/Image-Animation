@@ -1,12 +1,10 @@
 <script lang="ts">
-// Home界面
 import {Component} from "vue-property-decorator"
 import BaseRouterView from "@/views/View.vue";
 import loadSection from "@/utils/load-section"
 
 const sections: Array<string> = [
-  'hero',
-  'social-media'
+
 ]
 
 @Component({

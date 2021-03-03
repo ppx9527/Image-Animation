@@ -14,9 +14,9 @@ const routes: Array<RouteConfig> = [
         component: () => import('@/views/home/Index.vue')
       },
       {
-        path: 'pro',
-        name: 'Pro',
-        component: () => import('@/views/pro/Index.vue')
+        path: 'about',
+        name: 'About',
+        component: () => import('@/views/about/Index.vue')
       }
     ]
   }

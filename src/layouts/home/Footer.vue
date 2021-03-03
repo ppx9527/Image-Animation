@@ -45,6 +45,7 @@
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator"
 
+// 底部链接栏
 @Component
 export default class HomeFooter extends Vue{
   private social = {
