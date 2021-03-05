@@ -60,6 +60,7 @@ export default class HomeAppBar extends Vue{
   private drawer = null;
   private items = [
     'Home',
+    'Animation',
     'About'
   ];
 }

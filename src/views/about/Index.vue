@@ -4,7 +4,8 @@ import BaseRouterView from "@/views/View.vue";
 import loadSection from "@/utils/load-section"
 
 const sections: Array<string> = [
-
+  'bread-nav',
+  'log-time'
 ]
 
 @Component({
@@ -12,5 +13,6 @@ const sections: Array<string> = [
 })
 export default class Home extends BaseRouterView{
   sections = sections;
+  id = 'about'
 }
 </script>

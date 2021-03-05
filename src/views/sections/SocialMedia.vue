@@ -52,11 +52,7 @@
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator"
 
-@Component({
-  components: {
-    BaseHeading: () => import('@/components/base/Heading.vue')
-  }
-})
+@Component()
 export default class SocialMedia extends Vue{
 
 }
@@ -81,5 +77,4 @@ export default class SocialMedia extends Vue{
       width: 46px;
     }
   }
-
 </style>
