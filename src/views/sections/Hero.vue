@@ -70,7 +70,7 @@ import {Component, Vue} from "vue-property-decorator"
 
 
 // 首章节
-@Component()
+@Component
 export default class Hero extends Vue{
   private Height = this.$vuetify.breakpoint.mdAndUp ? '100vh' : '50vh';
   get minHeight() {

@@ -27,7 +27,7 @@
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator"
 
-@Component()
+@Component
 export default class BreadNav extends Vue{
   private imgSrc= `${this.$route.path.replace('/', '')}.jpg`;
 
