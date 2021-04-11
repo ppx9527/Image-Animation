@@ -6,7 +6,6 @@
           :is="`section-${section}`"
           v-for="section in sections"
           :key="section"
-
         />
       </v-col>
     </v-row>
@@ -19,7 +18,7 @@ import {Component, Vue} from "vue-property-decorator"
 // 此组件是所有路由子界面的父组件，负责加载所有章节
 @Component
 export default class BaseRouterView extends Vue{
-  protected id = '' ;
-  protected sections: Array<string> = [];
+  protected id!: string;
+  protected sections!: Array<string>;
 }
 </script>

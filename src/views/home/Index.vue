@@ -2,19 +2,26 @@
 // Home界面
 import {Component} from "vue-property-decorator"
 import BaseRouterView from "@/views/View.vue";
-import loadSection from "@/utils/load-section"
+import {NeedToLoad, load} from "@/utils/load-section"
 
-const sections: Array<string> = [
-  'hero',
-  'about-use',
-  'social-media'
-]
+const about: NeedToLoad = {
+  page: 'home',
+  nav: [],
+  sections: [
+    'hero',
+    'effect',
+    'about-use',
+    'social-media'
+  ]
+}
+
+const [component, sections] = load(about)
 
 @Component({
-  components: loadSection(sections)
+  components: component
 })
-export default class Home extends BaseRouterView{
+export default class Home extends BaseRouterView {
   sections = sections;
-  id = 'home'
+  id = 'home';
 }
 </script>

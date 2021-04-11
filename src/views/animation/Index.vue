@@ -1,18 +1,21 @@
 <script lang="ts">
 import {Component} from "vue-property-decorator"
 import BaseRouterView from "@/views/View.vue";
-import loadSection from "@/utils/load-section"
+import {NeedToLoad, load} from "@/utils/load-section"
 
-const sections: Array<string> = [
-  'bread-nav',
-  'animation'
-]
+const info: NeedToLoad = {
+  page: 'animation',
+  nav: ['bread-nav'],
+  sections: ['animation']
+}
+
+const [component, sections] = load(info)
 
 @Component({
-  components: loadSection(sections)
+  components: component
 })
-export default class Home extends BaseRouterView{
+export default class Home extends BaseRouterView {
   sections = sections;
-  id = 'animation'
+  id = 'animation';
 }
 </script>

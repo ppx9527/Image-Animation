@@ -16,7 +16,7 @@
           step="1"
           :complete="status > 1"
         >
-          请上传图片
+          上传静态图片
         </v-stepper-step>
 
         <v-divider></v-divider>
@@ -25,7 +25,7 @@
           step="2"
           :complete="status > 2"
         >
-          调整参数
+          上传视频
         </v-stepper-step>
 
         <v-divider></v-divider>
@@ -33,7 +33,7 @@
         <v-stepper-step
           step="3"
         >
-          输出结果
+          生成视频
         </v-stepper-step>
       </v-stepper-header>
 
@@ -41,15 +41,22 @@
         <v-stepper-content
           step="1"
         >
-          <v-card
-            class="mb-12"
-            color="grey lighten-1"
-            height="200px"
-          ></v-card>
 
+
+          <v-img :src="img" min-height="200">
+            <template v-slot:placeholder>
+              <v-card
+                class="mb-12"
+                color="grey lighten-1"
+                height="200px"
+              ></v-card>
+            </template>
+          </v-img>
+
+          <v-file-input @change="chooseImage"></v-file-input>
           <v-btn
             color="primary"
-            @click="status = 2"
+            @click="abc"
           >
             Continue
           </v-btn>
@@ -111,6 +118,30 @@ import {Component, Vue} from "vue-property-decorator"
 @Component
 export default class Animation extends Vue {
   private status = 1;
+  private img = '';
+  private file!: File;
+
+  chooseImage(e: File){
+    this.file = e;
+    this.img = URL.createObjectURL(e)
+  }
+
+  abc() {
+    const form = new FormData();
+    form.append('file', this.file, this.file.name);
+
+    this.$http.post('http://localhost:5000/upload', form, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }).then(response => {
+        console.log(response.data)
+      }, response => {
+        console.log(response.status)
+      })
+
+    // this.status = 2;
+  }
 }
 </script>
 
