@@ -2,12 +2,12 @@
   <v-sheet id="about-use">
     <div class="text-center">
       <v-avatar class="mb-4" size="62" color="primary">
-        <v-icon size="48">
-          mdi-apple
+        <v-icon size="48" color="white">
+          mdi-console
         </v-icon>
       </v-avatar>
 
-      <base-heading title="耗子尾汁" size="text-h4" weight="medium" :space="4"/>
+      <base-heading title="使用说明" size="text-h4" weight="medium" :space="4"/>
 
       <v-responsive
         class="ma-auto mb-12 primary" style="width: 46px"
@@ -56,22 +56,19 @@ export default class AboutUse extends Vue {
   private cards = [
     {
       id: '01',
-      title: '第一把',
-      subheading: '卢本伟牛逼',
-      body: '《原神》角色演示-「胡桃：生人勿近」 现已发布。往生堂重要的仪式，人人都该敬而远之。' +
-        '既然你们不「识趣」，那就给你们一点「有趣」的惩罚吧！'
+      title: '第一步',
+      subheading: '上传或选择人脸图片',
+      body: '上传或选择一张带有人脸的静态图片（最好是PNG格式），这一步是为了使图片动态化'
     },{
       id: '02',
-      title: '的大大的',
-      subheading: '69岁的老同志',
-      body: '《原神》角色演示-「胡桃：生人勿近」 现已发布。往生堂重要的仪式，人人都该敬而远之。' +
-        '既然你们不「识趣」，那就给你们一点「有趣」的惩罚吧！'
+      title: '第二步',
+      subheading: '上传一个包含人脸动作的视频',
+      body: '上传一个包含人脸动作的视频（最好是mp4格式），这一步是提取人脸的动作'
     },{
       id: '03',
-      title: '得得得得',
-      subheading: '鸡你太美',
-      body: '《原神》角色演示-「胡桃：生人勿近」 现已发布。往生堂重要的仪式，人人都该敬而远之。' +
-        '既然你们不「识趣」，那就给你们一点「有趣」的惩罚吧！'
+      title: '第三步',
+      subheading: '生成视频',
+      body: '这个生成的视频是第一步上传的静态人脸加上第二步上传的视频的人脸动作'
     }
   ]
 }
@@ -84,6 +81,11 @@ export default class AboutUse extends Vue {
     .v-divider{
       border-width: 3px 0 0 0 !important;
       border-color: rgba(56, 140, 208, .8);
+    }
+
+    .primary{
+      background-color: #42a5f6 !important;
+      border-color: #42a5f6 !important;
     }
   }
 </style>
