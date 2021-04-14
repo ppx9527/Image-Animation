@@ -3,7 +3,7 @@
     <div class="text-center">
       <v-avatar class="mb-4" size="62" color="primary">
         <v-icon size="48" color="white">
-          mdi-console
+          mdi-information-variant
         </v-icon>
       </v-avatar>
 

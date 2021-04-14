@@ -27,10 +27,14 @@
           />
 
           <div class="text-body-2 grey--text mb-10 ">
-            图像动态化包括生成视频序列，以便根据驱动视频的运动对源图像中的对象进行动态化处理。此无需使用任何注解或有关特定对象的先验信息就可以解决此问题。
-            一旦接受了一组描述相同类别对象（例如面孔，人体）的视频的训练，我们的方法就可以应用于此类的任何对象。<br>
-            为此，我们使用自我监督的公式将外观和运动信息分离。为了支持复杂的运动，我们使用由一组学习的关键点及其局部仿射变换组成的表示形式。
-            生成器网络对目标运动期间出现的遮挡进行建模，并将从源图像提取的外观与从驾驶视频获得的运动进行组合。
+            <div>
+              图像动态化包括生成视频序列，以便根据驱动视频的运动对源图像中的对象进行动态化处理。此无需使用任何注解或有关特定对象的先验信息就可以解决此问题。
+              一旦接受了一组描述相同类别对象（例如面孔，人体）的视频的训练，我们的方法就可以应用于此类的任何对象。
+            </div>
+            <div>
+              为此，我们使用自我监督的公式将外观和运动信息分离。为了支持复杂的运动，我们使用由一组学习的关键点及其局部仿射变换组成的表示形式。
+              生成器网络对目标运动期间出现的遮挡进行建模，并将从源图像提取的外观与从驾驶视频获得的运动进行组合。
+            </div>
           </div>
 
           <div class="d-flex align-center flex-wrap">
@@ -39,6 +43,7 @@
               x-large
               :depressed="true"
               :tile="true"
+              @click="scrollToEffect"
             >
               Discover More
               <v-icon right>
@@ -74,8 +79,13 @@ import {Component, Vue} from "vue-property-decorator"
 @Component
 export default class Hero extends Vue{
   private Height = this.$vuetify.breakpoint.mdAndUp ? '100vh' : '50vh';
+
   get minHeight() {
     return this.Height
+  }
+
+  private scrollToEffect() {
+    window.scrollTo(0, this.$el.clientHeight)
   }
 }
 </script>

@@ -22,9 +22,8 @@
       </div>
 
       <a
-        class="d-inline-block mb-8"
+        class="d-inline-block mb-8 text-decoration-none"
         href="https://github.com/AliaksandrSiarohin/first-order-model"
-        style="text-decoration: none;"
         target="_blank"
       >
         First Order Motion Model for Image Animation

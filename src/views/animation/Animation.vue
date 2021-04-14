@@ -43,7 +43,7 @@
         >
 
 
-          <v-img :src="img" min-height="200">
+          <v-img :src="img" min-height="200" max-height="300" max-width="300">
             <template v-slot:placeholder>
               <v-card
                 class="mb-12"
