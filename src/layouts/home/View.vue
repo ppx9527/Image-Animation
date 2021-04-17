@@ -14,7 +14,7 @@
         bottom
         right
         color="primary"
-        @click="$vuetify.goTo(0)"
+        @click="scrollTop"
       >
         <v-icon>mdi-chevron-up</v-icon>
       </v-btn>
@@ -24,6 +24,7 @@
 
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator";
+import {GoToOptions} from "vuetify/types/services/goto";
 
 // 此组件用来显示子路由的界面
 @Component
@@ -31,13 +32,13 @@ export default class BaseView extends Vue{
   private hidden = false;
 
   // 节流函数
-  // - func [function] 需要防抖的函数
+  // - func [Function] 需要防抖的函数
   // - delay [number] 毫秒，防抖期限值
-  // - return [function] 事件绑定函数
-  private throttle(func: any, delay: number) {
+  // - return [Function] 事件绑定函数
+  private throttle(func: Function, delay: number): Function {
     let valid = false;
 
-    return (...args: any[]) => {
+    return (...args: any) => {
       if(valid){
         //休息时间 暂不接客
         return;
@@ -58,6 +59,16 @@ export default class BaseView extends Vue{
   private hiddenButton() {
     const scrollTop = document.body.scrollTop + document.documentElement.scrollTop;
     this.hidden = scrollTop > 100;
+  }
+
+  private scrollTop() {
+    const options: GoToOptions = {
+      duration: 800,
+      offset: 0,
+      easing: 'easeInQuart'
+    }
+
+    this.$vuetify.goTo(0, options);
   }
 }
 </script>

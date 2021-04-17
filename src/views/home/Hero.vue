@@ -73,6 +73,7 @@
 
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator"
+import {GoToOptions} from "vuetify/types/services/goto";
 
 
 // 首章节
@@ -85,7 +86,13 @@ export default class Hero extends Vue{
   }
 
   private scrollToEffect() {
-    window.scrollTo(0, this.$el.clientHeight)
+    const options: GoToOptions = {
+      duration: 500,
+      offset: 0,
+      easing: 'easeInQuad'
+    }
+
+    this.$vuetify.goTo('#effect', options)
   }
 }
 </script>

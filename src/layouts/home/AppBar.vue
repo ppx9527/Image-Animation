@@ -4,6 +4,7 @@
     app
     elevation="1"
     elevate-on-scroll
+    extension-height="10"
     height="80"
   >
     <v-img
@@ -48,6 +49,14 @@
       class="hidden-md-and-up"
       @click="drawer = !drawer"
     />
+
+    <template v-if="$store.state.loading" v-slot:extension>
+      <v-progress-linear
+        indeterminate
+        color="cyan"
+        light
+      ></v-progress-linear>
+    </template>
   </v-app-bar>
 </template>
 
@@ -58,6 +67,7 @@ import {Component, Vue} from "vue-property-decorator"
 @Component
 export default class HomeAppBar extends Vue{
   private drawer = null;
+
   private items = [
     'Home',
     'Animation',
