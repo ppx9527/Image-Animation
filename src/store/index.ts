@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import Cookie from '@/utils/cookie'
 
 Vue.use(Vuex)
 
@@ -17,7 +18,8 @@ export default new Vuex.Store({
       states: false,
       promptText: '',
       color: ''
-    }
+    },
+    token: new Cookie('token')
   },
   mutations: {
     changeLoadingState(state) {

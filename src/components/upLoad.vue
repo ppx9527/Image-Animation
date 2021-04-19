@@ -1,6 +1,6 @@
 <template>
   <v-sheet>
-    <v-fab-transition v-if="type === 'image'">
+    <v-fade-transition v-if="type === 'image'" mode="out-in">
       <v-img
         v-if="imgUrl"
         :src="imgUrl"
@@ -15,9 +15,9 @@
         width="300"
         v-else
       ></v-card>
-    </v-fab-transition>
+    </v-fade-transition>
 
-    <v-fab-transition v-else>
+    <v-fade-transition v-else mode="out-in">
       <video v-if="imgUrl" :src="imgUrl"></video>
       <v-card
         color="grey lighten-1"
@@ -25,11 +25,12 @@
         width="300"
         v-else
       ></v-card>
-    </v-fab-transition>
+    </v-fade-transition>
 
     <v-file-input
       show-size
       counter
+      class="mt-6"
       :accept="fileType"
       :label="prompt"
       prepend-icon="mdi-image-filter-drama"
@@ -37,19 +38,23 @@
       :disabled="disabledSubmit"
       @change="chooseImage"
       @click:clear="imgUrl = ''"
-    ></v-file-input>
+    />
 
-    <v-btn
-      color="primary"
-      @click="submit"
-      :disabled="disabledSubmit"
-    >
-      提交
-    </v-btn>
+    <v-row>
+      <v-col cols="12" class="mt-2">
+        <v-btn
+          color="primary"
+          @click="submit"
+          :disabled="disabledSubmit"
+        >
+          上传
+        </v-btn>
 
-    <v-btn text>
-      Cancel
-    </v-btn>
+        <v-btn text>
+          Cancel
+        </v-btn>
+      </v-col>
+    </v-row>
   </v-sheet>
 </template>
 
@@ -88,9 +93,12 @@ export default class UpLoad extends Vue {
       this.$http.post('http://localhost:5000/upload', form, {
         headers: {
           'Content-Type': 'multipart/form-data'
-        }
+        },
+        credentials: true
       }).then(response => {
         this.disabledSubmit = false;
+        this.imgUrl = '';
+        this.image = null;
         this.$store.commit('changeLoadingState');
 
         if (response.status == 200 && response.data == '1') {
@@ -134,7 +142,3 @@ export default class UpLoad extends Vue {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

@@ -1,7 +1,9 @@
 <template>
   <v-main v-scroll="throttle(hiddenButton, 300)">
     <v-fade-transition mode="out-in">
-      <router-view />
+      <keep-alive>
+        <router-view />
+      </keep-alive>
     </v-fade-transition>
 
     <v-fab-transition>

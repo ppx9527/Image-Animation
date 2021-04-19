@@ -1,11 +1,6 @@
 <template>
   <div class="d-flex flex-column align-center mt-16 mb-10">
-    <div>
-      <p>
-        《原神》角色演示-「胡桃：生人勿近」 现已发布。往生堂重要的仪式，人人都该敬而远之。
-        既然你们不「识趣」，那就给你们一点「有趣」的惩罚吧！
-      </p>
-    </div>
+    <base-heading title="请按照步骤依次执行" tag="h5" size="text-h5" weight="medium" :space="6" style="color: #42a5f6"/>
 
     <v-stepper
       v-model="$store.state.stepperState"
@@ -18,7 +13,6 @@
         >
           上传图片
         </v-stepper-step>
-
         <v-divider></v-divider>
 
         <v-stepper-step
@@ -27,7 +21,6 @@
         >
           上传视频
         </v-stepper-step>
-
         <v-divider></v-divider>
 
         <v-stepper-step
@@ -47,22 +40,52 @@
         </v-stepper-content>
 
         <v-stepper-content step="3">
-          <v-card
-            class="mb-12"
-            color="grey lighten-1"
-            height="200px"
-          ></v-card>
+          <v-fade-transition mode="out-in">
+            <v-row
+              v-if="videoUrl"
+              width="300"
+            >
+              <v-col cols="12">
+                <video :src="videoUrl" autoplay loop></video>
 
-          <v-btn
-            color="primary"
-            @click="status = 1"
-          >
-            Continue
-          </v-btn>
+                <v-subheader class="pl-0">
+                  下载链接
+                </v-subheader>
+                <a :href="videoUrl" download="result.mp4" class="text-decoration-none">请点击下载</a>
+              </v-col>
+            </v-row>
 
-          <v-btn text>
-            Cancel
-          </v-btn>
+            <v-card
+              color="grey lighten-1"
+              height="300"
+              width="300"
+              v-else
+            ></v-card>
+          </v-fade-transition>
+
+          <v-row class="mt-4">
+            <v-col cols="12">
+              <v-btn
+                color="primary"
+                :disabled="disabledGet"
+                @click="getResult"
+              >
+                生成视频
+              </v-btn>
+
+              <v-btn
+                text
+                @click="() => {
+                  $store.commit('goToNextStep');
+                  videoUrl = ''
+                  disabledGet = false;
+                }"
+                :disabled="!disabledGet"
+              >
+                重新开始
+              </v-btn>
+            </v-col>
+          </v-row>
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
@@ -104,10 +127,44 @@ import {Component, Vue} from "vue-property-decorator"
   }
 })
 export default class Animation extends Vue {
+  videoUrl = '';
+  disabledGet = false;
 
+  getResult(){
+    this.disabledGet = true;
+
+    this.$http.get('http://localhost:5000/getResult', {
+      credentials: true,
+      responseType: 'blob'
+    }).then(
+      response => {
+        const data = response.data;
+
+        if (data instanceof Blob) {
+          this.videoUrl = URL.createObjectURL(data)
+          this.$store.commit('changeSnackbarState', {
+            states: true,
+            promptText: '生成成功，请点击视频下面的链接下载',
+            color: 'light-green'
+          });
+        } else {
+          this.$store.commit('changeSnackbarState', {
+            states: true,
+            promptText: `生成失败，原因${data}`,
+            color: 'red accent-4'
+          });
+        }
+
+      }, response => {
+        this.disabledGet = false;
+
+        this.$store.commit('changeSnackbarState', {
+          states: true,
+          promptText: `请求失败，错误代码：${response.status}`,
+          color: 'red accent-4'
+        })
+      }
+    )
+  }
 }
 </script>
-
-<style>
-
-</style>
