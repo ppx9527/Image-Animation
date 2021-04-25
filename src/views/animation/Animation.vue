@@ -132,13 +132,21 @@ export default class Animation extends Vue {
 
   getResult(){
     this.disabledGet = true;
+    this.$store.commit('changeLoadingState');
 
-    this.$http.get('http://localhost:5000/getResult', {
+    this.$http.get('getResult', {
       credentials: true,
-      responseType: 'blob'
+      responseType: 'blob',
+      headers: {
+        'Cache-Control': 'no-cache'
+      },
+      params: {
+        token: this.$store.state.token.cookieValue
+      }
     }).then(
       response => {
         const data = response.data;
+        this.$store.commit('changeLoadingState');
 
         if (data instanceof Blob) {
           this.videoUrl = URL.createObjectURL(data)
@@ -150,13 +158,14 @@ export default class Animation extends Vue {
         } else {
           this.$store.commit('changeSnackbarState', {
             states: true,
-            promptText: `生成失败，原因${data}`,
-            color: 'red accent-4'
+            promptText: `生成失败，${data}，请重新开始`,
+            color: 'orange accent-4'
           });
         }
 
       }, response => {
         this.disabledGet = false;
+        this.$store.commit('changeLoadingState');
 
         this.$store.commit('changeSnackbarState', {
           states: true,

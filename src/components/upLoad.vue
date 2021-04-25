@@ -6,26 +6,43 @@
         :src="imgUrl"
         max-height="300"
         max-width="300"
-        transition="fade-transition"
         class="mb-4"
       ></v-img>
-      <v-card
-        color="grey lighten-1"
-        height="300"
-        width="300"
+      <v-skeleton-loader
+        min-height="300"
+        max-width="300"
+        type="image"
         v-else
-      ></v-card>
+      ></v-skeleton-loader>
+
     </v-fade-transition>
 
     <v-fade-transition v-else mode="out-in">
-      <video v-if="imgUrl" :src="imgUrl"></video>
-      <v-card
-        color="grey lighten-1"
-        height="300"
+      <video
+        v-if="imgUrl"
+        :src="imgUrl"
         width="300"
+        height="300"
+      ></video>
+
+      <v-skeleton-loader
+        min-height="300"
+        max-width="300"
+        type="image"
         v-else
-      ></v-card>
+      ></v-skeleton-loader>
     </v-fade-transition>
+
+    <v-alert
+      v-if="type === 'video'"
+      class="mt-4"
+      border="left"
+      colored-border
+      type="info"
+      elevation="2"
+    >
+      如果上传的视频没有预览，是因为video标签仅支持H.264编码格式，请直接上传
+    </v-alert>
 
     <v-file-input
       show-size
@@ -90,15 +107,17 @@ export default class UpLoad extends Vue {
       const form = new FormData();
       form.append('file', this.image, this.image.name);
 
-      this.$http.post('http://localhost:5000/upload', form, {
+      this.$http.post('upload', form, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
+          'Cache-Control': 'no-cache'
         },
-        credentials: true
+        credentials: true,
+        params: {
+          token: this.$store.state.token.cookieValue
+        }
       }).then(response => {
         this.disabledSubmit = false;
-        this.imgUrl = '';
-        this.image = null;
         this.$store.commit('changeLoadingState');
 
         if (response.status == 200 && response.data == '1') {
@@ -107,12 +126,14 @@ export default class UpLoad extends Vue {
             promptText: '上传成功',
             color: 'light-green',
           })
+          this.imgUrl = '';
+          this.image = null;
           this.$store.commit('goToNextStep');
         } else {
           this.$store.commit('changeSnackbarState', {
             states: true,
-            promptText: '上传失败，服务器异常',
-            color: 'red accent-4'
+            promptText: `上传失败，${response.data}`,
+            color: 'orange accent-4'
           })
         }
       }, response => {
@@ -121,7 +142,7 @@ export default class UpLoad extends Vue {
         this.$store.commit('changeSnackbarState', {
           states: true,
           promptText: `上传失败，请重新上传，错误代码：${response.status}`,
-          color: 'red accent-4'
+          color: 'orange accent-4'
         })
       })
     } else {

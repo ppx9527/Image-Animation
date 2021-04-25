@@ -21,6 +21,14 @@
         <v-icon>mdi-chevron-up</v-icon>
       </v-btn>
     </v-fab-transition>
+
+    <v-overlay :value="$store.state.loading">
+      <v-progress-circular
+        indeterminate
+        size="64"
+      ></v-progress-circular>
+    </v-overlay>
+
   </v-main>
 </template>
 
@@ -83,4 +91,5 @@ export default class BaseView extends Vue{
   #toTop.v-btn::before{
     background-color: unset !important;
   }
+
 </style>

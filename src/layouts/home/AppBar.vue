@@ -50,13 +50,6 @@
       @click="drawer = !drawer"
     />
 
-    <template v-if="$store.state.loading" v-slot:extension>
-      <v-progress-linear
-        indeterminate
-        color="cyan"
-        light
-      ></v-progress-linear>
-    </template>
   </v-app-bar>
 </template>
 

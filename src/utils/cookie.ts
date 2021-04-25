@@ -1,6 +1,6 @@
 class Cookie{
   private readonly cookie: string;
-  private readonly cookieValue: string;
+  public readonly cookieValue: string;
 
   constructor(name: string){
     this.cookie = name;
