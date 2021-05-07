@@ -1,7 +1,7 @@
 # image-animation
 
 ### 在线预览
-[image-animation](https://image-animation-0gske0mn62aca117-1305139282.tcloudbaseapp.com)
+[image-animation](http://otmp.top:8540)
 
 ### 安装项目
 ```

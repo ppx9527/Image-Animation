@@ -134,7 +134,7 @@ export default class Animation extends Vue {
     this.disabledGet = true;
     this.$store.commit('changeLoadingState');
 
-    this.$http.get('getResult', {
+    this.$http.get('api/getResult', {
       credentials: true,
       responseType: 'blob',
       headers: {

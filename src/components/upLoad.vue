@@ -107,7 +107,7 @@ export default class UpLoad extends Vue {
       const form = new FormData();
       form.append('file', this.image, this.image.name);
 
-      this.$http.post('upload', form, {
+      this.$http.post('api/upload', form, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Cache-Control': 'no-cache'

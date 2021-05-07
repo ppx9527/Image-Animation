@@ -9,10 +9,6 @@ import VueResource from 'vue-resource'
 Vue.use(VueResource)
 Vue.config.productionTip = false
 
-// 设置请求根域名，有bug，ts要报错，但确实设置得起
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore
-Vue.http.options.root = 'http://127.0.0.1:5000'
 
 new Vue({
   router,
