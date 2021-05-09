@@ -41,7 +41,8 @@
       type="info"
       elevation="2"
     >
-      如果上传的视频没有预览，是因为video标签仅支持H.264编码格式，请直接上传
+      如果上传的视频没有预览，是因为video标签仅支持H.264编码格式，请直接上传<br>
+      并且上传的视频最大为30MB
     </v-alert>
 
     <v-file-input
@@ -107,20 +108,20 @@ export default class UpLoad extends Vue {
       const form = new FormData();
       form.append('file', this.image, this.image.name);
 
-      this.$http.post('api/upload', form, {
+      this.axios.post('upload', form, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Cache-Control': 'no-cache'
         },
-        credentials: true,
         params: {
           token: this.$store.state.token.cookieValue
-        }
+        },
+        timeout: 60000,
       }).then(response => {
         this.disabledSubmit = false;
         this.$store.commit('changeLoadingState');
 
-        if (response.status == 200 && response.data == '1') {
+        if (response.data == '1') {
           this.$store.commit('changeSnackbarState', {
             states: true,
             promptText: '上传成功',
@@ -132,16 +133,16 @@ export default class UpLoad extends Vue {
         } else {
           this.$store.commit('changeSnackbarState', {
             states: true,
-            promptText: `上传失败，${response.data}`,
+            promptText: `上传失败，请重新上传，${response.data}`,
             color: 'orange accent-4'
           })
         }
-      }, response => {
+      }).catch(error => {
         this.disabledSubmit = false;
         this.$store.commit('changeLoadingState');
         this.$store.commit('changeSnackbarState', {
           states: true,
-          promptText: `上传失败，请重新上传，错误代码：${response.status}`,
+          promptText: `上传失败，请重新上传，${error}`,
           color: 'orange accent-4'
         })
       })
