@@ -100,59 +100,55 @@ export default class UpLoad extends Vue {
     }
   }
 
-  private submit() {
-    if (this.imgUrl != '' && this.image instanceof File) {
-      this.disabledSubmit = true;
-      this.$store.commit('changeLoadingState');
+   private async submit() {
+     const form = new FormData();
+     if (this.imgUrl !== '' && this.image instanceof File) {
+       form.append('file', this.image, this.image.name);
+     } else {
+       this.handleError(new Error('上传失败，请选择图片后上传'))
+       return
+     }
 
-      const form = new FormData();
-      form.append('file', this.image, this.image.name);
+     this.disabledSubmit = true;
+     this.$store.commit('changeLoadingState');
+     try {
+       const response = await this.axios.post('upload', form, {
+         headers: {
+           'Content-Type': 'multipart/form-data',
+           'Cache-Control': 'no-cache'
+         },
+         params: {
+           token: this.$store.state.token.cookieValue
+         },
+         timeout: 60000,
+       }).finally(() => {
+         this.disabledSubmit = false;
+         this.$store.commit('changeLoadingState');
+       })
 
-      this.axios.post('upload', form, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Cache-Control': 'no-cache'
-        },
-        params: {
-          token: this.$store.state.token.cookieValue
-        },
-        timeout: 60000,
-      }).then(response => {
-        this.disabledSubmit = false;
-        this.$store.commit('changeLoadingState');
+       if (response.data == '1') {
+         this.$store.commit('changeSnackbarState', {
+           states: true,
+           promptText: '上传成功',
+           color: 'light-green',
+         })
+         this.imgUrl = '';
+         this.image = null;
+         this.$store.commit('goToNextStep');
+       } else {
+         this.handleError(new Error('上传失败，请重新上传'))
+       }
+     } catch(error) {
+       this.handleError(error)
+     }
+  }
 
-        if (response.data == '1') {
-          this.$store.commit('changeSnackbarState', {
-            states: true,
-            promptText: '上传成功',
-            color: 'light-green',
-          })
-          this.imgUrl = '';
-          this.image = null;
-          this.$store.commit('goToNextStep');
-        } else {
-          this.$store.commit('changeSnackbarState', {
-            states: true,
-            promptText: `上传失败，请重新上传，${response.data}`,
-            color: 'orange accent-4'
-          })
-        }
-      }).catch(error => {
-        this.disabledSubmit = false;
-        this.$store.commit('changeLoadingState');
-        this.$store.commit('changeSnackbarState', {
-          states: true,
-          promptText: `上传失败，请重新上传，${error}`,
-          color: 'orange accent-4'
-        })
-      })
-    } else {
-      this.$store.commit('changeSnackbarState', {
-        states: true,
-        promptText: '上传失败，请选择图片后上传',
-        color: 'red accent-4'
-      })
-    }
+  private handleError(error: Error) {
+    this.$store.commit('changeSnackbarState', {
+      states: true,
+      promptText: error.message,
+      color: 'orange accent-4'
+    })
   }
 
   get fileType(){

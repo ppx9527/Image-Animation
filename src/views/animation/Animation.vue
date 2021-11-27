@@ -130,23 +130,26 @@ export default class Animation extends Vue {
   videoUrl = '';
   disabledGet = false;
 
-  getResult(){
+  async getResult(){
     this.disabledGet = true;
     this.$store.commit('changeLoadingState');
 
-    this.axios.get('getResult', {
-      responseType: 'blob',
-      headers: {
-        'Cache-Control': 'no-cache'
-      },
-      params: {
-        token: this.$store.state.token.cookieValue
-      },
-      timeout: 600000
-    }).then(response => {
-      const data = response.data;
-      this.$store.commit('changeLoadingState');
+    try {
+      const response = await this.axios.get('getResult', {
+        responseType: 'blob',
+        headers: {
+          'Cache-Control': 'no-cache'
+        },
+        params: {
+          token: this.$store.state.token.cookieValue
+        },
+        timeout: 600000
+      }).finally(() => {
+        this.disabledGet = false;
+        this.$store.commit('changeLoadingState')
+      })
 
+      const data = response.data;
       if (data instanceof Blob) {
         this.videoUrl = URL.createObjectURL(data)
         this.$store.commit('changeSnackbarState', {
@@ -155,20 +158,19 @@ export default class Animation extends Vue {
           color: 'light-green'
         });
       } else {
-        this.$store.commit('changeSnackbarState', {
-          states: true,
-          promptText: `生成失败，${data}，请重新开始`,
-          color: 'orange accent-4'
-        });
+        this.handleError(new Error('生成失败，请出现开始'))
       }
-    }).catch(error => {
-      this.disabledGet = false;
-      this.$store.commit('changeLoadingState');
-      this.$store.commit('changeSnackbarState', {
-        states: true,
-        promptText: `请求失败，${error}`,
-        color: 'red accent-4'
-      })
+
+    } catch(error) {
+      this.handleError(error)
+    }
+  }
+
+  handleError(error: Error): void {
+    this.$store.commit('changeSnackbarState', {
+      states: true,
+      promptText: `失败，${error.message}`,
+      color: 'red accent-4'
     })
   }
 }
